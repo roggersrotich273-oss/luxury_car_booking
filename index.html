@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mash Poa · Luxury Car Booking · East Africa</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- EmailJS SDK for real email sending -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+
+    body {
+      background: linear-gradient(135deg, #0f1419 0%, #1a1f2b 100%);
+      min-height: 100vh;
+      padding: 1.5rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+    }
+
+    .booking-card {
+      max-width: 1250px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.97);
+      backdrop-filter: blur(20px);
+      border-radius: 2.5rem;
+      box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(212, 175, 55, 0.2) inset;
+      display: grid;
+      grid-template-columns: 1fr 1.3fr;
+      overflow: hidden;
+      animation: fadeUp 0.7s ease;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== LEFT PANEL ===== */
+    .brand-panel {
+      background: linear-gradient(160deg, #0b0e14 0%, #1a1f2b 60%, #2a1f0f 100%);
+      color: white;
+      padding: 2.5rem 2.2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .brand-panel::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(212, 175, 55, 0.08) 0%, transparent 50%);
+      animation: shimmer 8s infinite linear;
+    }
+
+    @keyframes shimmer {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .brand-panel > * { position: relative; z-index: 2; }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 1.9rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .logo i {
+      color: #d4af37;
+      font-size: 2.2rem;
+      filter: drop-shadow(0 2px 8px rgba(212, 175, 55, 0.5));
+    }
+
+    .logo span { background: linear-gradient(to right, #fff, #d4af37); -webkit-background-clip: text; background-clip: text; color: transparent; }
+
+    .tagline {
+      color: #b0b8c5;
+      font-size: 0.85rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-top: 0.4rem;
+      font-weight: 500;
+    }
+
+    .route-map {
+      margin: 2rem 0 1.5rem;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 1.5rem;
+      padding: 1.2rem;
+      border: 1px solid rgba(212, 175, 55, 0.2);
+    }
+
+    .route-map h4 {
+      font-size: 0.85rem;
+      letter-spacing: 1.5px;
+      color: #d4af37;
+      text-transform: uppercase;
+      margin-bottom: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .route-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.6rem;
+    }
+
+    .route-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.82rem;
+      color: #d1d5db;
+      padding: 0.5rem 0.6rem;
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 0.6rem;
+      transition: all 0.2s;
+      border-left: 2px solid transparent;
+    }
+
+    .route-item i {
+      color: #d4af37;
+      font-size: 0.8rem;
+    }
+
+    .route-item:hover {
+      background: rgba(212, 175, 55, 0.1);
+      border-left-color: #d4af37;
+      transform: translateX(3px);
+    }
+
+    .car-image {
+      width: 100%;
+      height: 150px;
+      background: url('https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?q=80&w=2070&auto=format&fit=crop') center/cover no-repeat;
+      border-radius: 1.2rem;
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.7);
+      transition: transform 0.3s;
+    }
+
+    .car-image:hover { transform: scale(1.02); }
+
+    .car-name {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-top: 1rem;
+      letter-spacing: -0.02em;
+    }
+
+    .car-name small {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 400;
+      color: #9aa3b2;
+      margin-top: 0.2rem;
+      letter-spacing: 0.5px;
+    }
+
+    .price-tag {
+      display: flex;
+      align-items: baseline;
+      gap: 0.6rem;
+      margin-top: 0.9rem;
+    }
+
+    .price-tag .amount {
+      font-size: 2.4rem;
+      font-weight: 800;
+      background: linear-gradient(to right, #d4af37, #f5d76e);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      line-height: 1;
+    }
+
+    .price-tag .per { color: #9aa3b2; font-size: 0.9rem; }
+
+    .specs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem 1.4rem;
+      margin-top: 1.5rem;
+      color: #b0b8c5;
+      font-size: 0.82rem;
+    }
+
+    .specs i { color: #d4af37; margin-right: 0.35rem; }
+
+    /* ===== RIGHT PANEL ===== */
+    .form-panel {
+      background: white;
+      padding: 2.2rem 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.3rem;
+      max-height: 90vh;
+      overflow-y: auto;
+      color: #111;
+    }
+
+    .form-panel::-webkit-scrollbar { width: 6px; }
+    .form-panel::-webkit-scrollbar-thumb { background: #d4af37; border-radius: 10px; }
+
+    .form-header h2 {
+      font-size: 1.7rem;
+      font-weight: 700;
+      color: #0b0e14;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .form-header h2 i { color: #d4af37; }
+    .form-header p { color: #6b7280; font-size: 0.9rem; margin-top: 0.3rem; }
+
+    .step-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: #fef9e7;
+      color: #92702a;
+      padding: 0.35rem 0.8rem;
+      border-radius: 2rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      border: 1px solid rgba(212, 175, 55, 0.3);
+    }
+
+    .section-title {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #4b5563;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.7rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .section-title i { color: #d4af37; }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .input-group label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #4b5563;
+    }
+
+    .input-group label i { color: #d4af37; margin-right: 0.35rem; }
+
+    .input-group input, .input-group select {
+      padding: 0.85rem 1rem;
+      border-radius: 0.9rem;
+      border: 1.5px solid #e5e7eb;
+      background: #fafbfc;
+      font-size: 0.95rem;
+      outline: none;
+      color: #111827;
+      font-weight: 500;
+      transition: all 0.15s;
+      width: 100%;
+      font-family: inherit;
+    }
+
+    .input-group input:focus, .input-group select:focus {
+      border-color: #d4af37;
+      box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.12);
+      background: #fff;
+    }
+
+    .input-group input::placeholder { color: #9ca3af; font-weight: 400; }
+
+    .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.9rem; }
+
+    .payment-section {
+      background: linear-gradient(135deg, #fafafa 0%, #f5f7fb 100%);
+      padding: 1.2rem;
+      border-radius: 1.2rem;
+      border: 1px solid #edf2f7;
+    }
+
+    .card-icons {
+      display: flex;
+      gap: 0.7rem;
+      margin-bottom: 0.8rem;
+      font-size: 1.6rem;
+    }
+
+    .card-icons i.fa-cc-visa { color: #1a1f71; }
+    .card-icons i.fa-cc-mastercard { color: #eb001b; }
+    .card-icons i.fa-cc-amex { color: #002663; }
+
+    .total-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.8rem 1rem;
+      background: #0b0e14;
+      border-radius: 0.9rem;
+      color: white;
+      margin-top: 0.5rem;
+    }
+
+    .total-row span:first-child { font-size: 0.8rem; color: #b0b8c5; text-transform: uppercase; letter-spacing: 1px; }
+    .total-row span:last-child { font-size: 1.5rem; font-weight: 700; color: #d4af37; }
+
+    .btn-book {
+      background: linear-gradient(135deg, #0b0e14 0%, #1a1f2b 100%);
+      border: none;
+      padding: 1.1rem 1.8rem;
+      border-radius: 1.2rem;
+      font-weight: 700;
+      font-size: 1rem;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.7rem;
+      cursor: pointer;
+      transition: all 0.25s;
+      box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      letter-spacing: 0.3px;
+      font-family: inherit;
+    }
+
+    .btn-book i { color: #d4af37; font-size: 1.1rem; transition: transform 0.2s; }
+    .btn-book:hover:not(:disabled) { background: linear-gradient(135deg, #1a1f2b 0%, #2a1f0f 100%); transform: translateY(-2px); box-shadow: 0 18px 32px -8px rgba(0, 0, 0, 0.5); }
+    .btn-book:hover i { transform: translateX(4px); }
+    .btn-book:disabled { opacity: 0.65; cursor: not-allowed; }
+
+    .spinner {
+      display: inline-block;
+      width: 1.1rem;
+      height: 1.1rem;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: #d4af37;
+      animation: spin 0.7s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .secure-note {
+      font-size: 0.72rem;
+      color: #9ca3af;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+    }
+
+    .secure-note i { color: #10b981; }
+
+    /* ===== TICKET MODAL ===== */
+    .ticket-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s, visibility 0.3s;
+      padding: 1.5rem;
+    }
+
+    .ticket-modal.active { opacity: 1; visibility: visible; }
+
+    .ticket {
+      background: white;
+      max-width: 460px;
+      width: 100%;
+      border-radius: 1.8rem;
+      overflow: hidden;
+      box-shadow: 0 40px 80px rgba(0, 0, 0, 0.5);
+      transform: scale(0.85) translateY(20px);
+      transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.3, 1.1);
+      max-height: 92vh;
+      overflow-y: auto;
+    }
+
+    .ticket-modal.active .ticket { transform: scale(1) translateY(0); }
+
+    .ticket-header {
+      background: linear-gradient(135deg, #0b0e14 0%, #2a1f0f 100%);
+      color: white;
+      padding: 1.8rem 1.5rem 1.5rem;
+      text-align: center;
+      position: relative;
+    }
+
+    .ticket-header::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 12px;
+      background: radial-gradient(circle at 10px -5px, transparent 10px, white 11px);
+      background-size: 20px 20px;
+    }
+
+    .ticket-header i.big-icon {
+      font-size: 3rem;
+      color: #d4af37;
+      margin-bottom: 0.3rem;
+      filter: drop-shadow(0 4px 10px rgba(212, 175, 55, 0.4));
+    }
+
+    .ticket-header h3 { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; }
+    .ticket-header p { color: #b0b8c5; font-size: 0.85rem; margin-top: 0.2rem; }
+
+    .ticket-body { padding: 1.5rem; color: #111; }
+
+    .email-line {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      padding: 0.7rem 1rem;
+      border-radius: 0.8rem;
+      font-size: 0.85rem;
+      margin-bottom: 1rem;
+      color: #166534;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      word-break: break-all;
+    }
+
+    .email-line i { color: #10b981; flex-shrink: 0; }
+
+    .ticket-details {
+      background: #fafafa;
+      border-radius: 1rem;
+      padding: 0.9rem 1rem;
+      border: 1px dashed #d1d5db;
+      margin-bottom: 1rem;
+    }
+
+    .ticket-details p {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.45rem 0;
+      border-bottom: 1px solid #e5e7eb;
+      font-size: 0.85rem;
+      gap: 0.8rem;
+    }
+
+    .ticket-details p:last-child { border-bottom: none; }
+    .ticket-details span:first-child { color: #6b7280; flex-shrink: 0; }
+    .ticket-details span:last-child { font-weight: 600; text-align: right; color: #111827; }
+
+    .close-btn {
+      width: 100%;
+      background: #0b0e14;
+      border: 1px solid #d4af37;
+      color: white;
+      padding: 0.9rem;
+      border-radius: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+
+    .close-btn:hover { background: #1a1f2b; }
+
+    /* ===== TOAST ===== */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(120px);
+      background: #0b0e14;
+      color: white;
+      padding: 0.9rem 1.6rem;
+      border-radius: 3rem;
+      font-weight: 500;
+      box-shadow: 0 20px 40px -8px black;
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      z-index: 1100;
+      transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.3, 1.1);
+      border: 1px solid #d4af37;
+      font-size: 0.9rem;
+      max-width: 90vw;
+    }
+
+    .toast.show { transform: translateX(-50%) translateY(0); }
+    .toast i { font-size: 1.2rem; color: #d4af37; }
+    .toast.error { border-color: #ef4444; }
+    .toast.error i { color: #ef4444; }
+
+    /* ===== CONFIG BANNER (demo) ===== */
+    .config-banner {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: #fef3c7;
+      color: #78350f;
+      padding: 0.5rem 1rem;
+      font-size: 0.78rem;
+      text-align: center;
+      z-index: 999;
+      border-bottom: 1px solid #fcd34d;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .config-banner button {
+      background: #d4af37;
+      border: none;
+      padding: 0.25rem 0.7rem;
+      border-radius: 1rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      color: #000;
+      font-family: inherit;
+    }
+
+    .config-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(6px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      padding: 1.5rem;
+    }
+
+    .config-modal.active { display: flex; }
+
+    .config-box {
+      background: white;
+      border-radius: 1.5rem;
+      padding: 1.8rem;
+      max-width: 480px;
+      width: 100%;
+      color: #111;
+    }
+
+    .config-box h3 { font-size: 1.2rem; margin-bottom: 0.5rem; color: #0b0e14; }
+    .config-box p { font-size: 0.82rem; color: #6b7280; margin-bottom: 1rem; line-height: 1.5; }
+    .config-box a { color: #92702a; font-weight: 600; }
+    .config-box .input-group { margin-bottom: 0.9rem; }
+    .config-box .btn-save {
+      background: #0b0e14;
+      color: white;
+      border: 1px solid #d4af37;
+      padding: 0.75rem;
+      border-radius: 0.7rem;
+      width: 100%;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    @media (max-width: 950px) {
+      .booking-card { grid-template-columns: 1fr; }
+      .form-panel { max-height: none; }
+      .route-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    @media (max-width: 600px) {
+      body { padding: 0.8rem; }
+      .route-grid { grid-template-columns: repeat(2, 1fr); }
+      .row-2 { grid-template-columns: 1fr; }
+      .form-panel { padding: 1.5rem 1.2rem; }
+      .brand-panel { padding: 1.8rem 1.4rem; }
+      .form-header h2 { font-size: 1.4rem; }
+      .car-name { font-size: 1.5rem; }
+      .price-tag .amount { font-size: 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- CONFIG BANNER -->
+  <div class="config-banner" id="configBanner">
+    <i class="fas fa-envelope-circle-check"></i>
+    <span>To send <strong>real emails</strong>, configure EmailJS (free).</span>
+    <button id="openConfigBtn">Setup now</button>
+  </div>
+
+  <!-- MAIN CARD -->
+  <div class="booking-card" style="margin-top: 2rem;">
+    <!-- LEFT -->
+    <div class="brand-panel">
+      <div>
+        <div class="logo">
+          <i class="fas fa-gem"></i>
+          <span>MASH <span style="color:#d4af37;">POA</span></span>
+        </div>
+        <div class="tagline">Luxury car rental · East Africa</div>
+      </div>
+
+      <div class="route-map">
+        <h4><i class="fas fa-route"></i> Our network</h4>
+        <div class="route-grid">
+          <div class="route-item"><i class="fas fa-city"></i> Mombasa</div>
+          <div class="route-item"><i class="fas fa-city"></i> Nairobi</div>
+          <div class="route-item"><i class="fas fa-city"></i> Kisumu</div>
+          <div class="route-item"><i class="fas fa-flag"></i> Tanzania</div>
+          <div class="route-item"><i class="fas fa-flag"></i> Rwanda</div>
+          <div class="route-item"><i class="fas fa-flag"></i> Uganda</div>
+        </div>
+      </div>
+
+      <div>
+        <div class="car-image"></div>
+        <div class="car-name">
+          Mercedes‑Maybach S680
+          <small>2025 · Exclusive Edition</small>
+        </div>
+        <div class="price-tag">
+          <span class="amount">$1,890</span>
+          <span class="per">/ day</span>
+        </div>
+        <div class="specs">
+          <div><i class="fas fa-bolt"></i> 630 hp</div>
+          <div><i class="fas fa-chair"></i> 4 seats</div>
+          <div><i class="fas fa-gas-pump"></i> V12</div>
+          <div><i class="fas fa-shield-alt"></i> Armored</div>
+        </div>
+      </div>
+
+      <div style="color:#9aa3b2; font-size:0.75rem; letter-spacing:1px; margin-top:1rem;">
+        <i class="fas fa-circle" style="color:#d4af37; font-size:0.4rem; vertical-align:middle;"></i>
+        Complementary chauffeur & concierge
+      </div>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="form-panel">
+      <div class="form-header">
+        <div class="step-badge"><i class="fas fa-check-circle"></i> Instant confirmation</div>
+        <h2><i class="fas fa-calendar-check"></i> Book your ride</h2>
+        <p>Pay securely · ticket delivered to your real e‑mail.</p>
+      </div>
+
+      <form id="bookingForm">
+        <!-- CUSTOMER -->
+        <div class="section-title"><i class="fas fa-user"></i> Customer details</div>
+
+        <div class="input-group">
+          <label><i class="fas fa-user"></i> Full name</label>
+          <input type="text" id="fullName" placeholder="e.g. James Carter" required>
+        </div>
+
+        <div class="row-2">
+          <div class="input-group">
+            <label><i class="fas fa-envelope"></i> Real e‑mail</label>
+            <input type="email" id="email" placeholder="you@example.com" required>
+          </div>
+          <div class="input-group">
+            <label><i class="fas fa-phone"></i> Phone</label>
+            <input type="tel" id="phone" placeholder="+254 7XX XXX XXX" required>
+          </div>
+        </div>
+
+        <!-- TRIP -->
+        <div class="section-title"><i class="fas fa-route"></i> Trip details</div>
+
+        <div class="row-2">
+          <div class="input-group">
+            <label><i class="fas fa-map-marker-alt"></i> Pick‑up city</label>
+            <select id="pickupCity" required>
+              <option value="Mombasa">Mombasa, Kenya</option>
+              <option value="Nairobi" selected>Nairobi, Kenya</option>
+              <option value="Kisumu">Kisumu, Kenya</option>
+              <option value="Dar es Salaam">Dar es Salaam, Tanzania</option>
+              <option value="Kigali">Kigali, Rwanda</option>
+              <option value="Kampala">Kampala, Uganda</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label><i class="fas fa-flag-checkered"></i> Drop‑off city</label>
+            <select id="dropoffCity" required>
+              <option value="Mombasa">Mombasa, Kenya</option>
+              <option value="Nairobi">Nairobi, Kenya</option>
+              <option value="Kisumu" selected>Kisumu, Kenya</option>
+              <option value="Dar es Salaam">Dar es Salaam, Tanzania</option>
+              <option value="Kigali">Kigali, Rwanda</option>
+              <option value="Kampala">Kampala, Uganda</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row-2">
+          <div class="input-group">
+            <label><i class="fas fa-calendar-day"></i> Pick‑up date</label>
+            <input type="date" id="pickupDate" required>
+          </div>
+          <div class="input-group">
+            <label><i class="fas fa-clock"></i> Pick‑up time</label>
+            <input type="time" id="pickupTime" value="10:00" required>
+          </div>
+        </div>
+
+        <!-- PAYMENT -->
+        <div class="section-title"><i class="fas fa-lock"></i> Payment details</div>
+
+        <div class="payment-section">
+          <div class="card-icons">
+            <i class="fab fa-cc-visa"></i>
+            <i class="fab fa-cc-mastercard"></i>
+            <i class="fab fa-cc-amex"></i>
+            <i class="fab fa-cc-apple-pay" style="margin-left:auto; opacity:0.9;"></i>
+          </div>
+
+          <div class="input-group">
+            <label><i class="fas fa-credit-card"></i> Card number</label>
+            <input type="text" id="cardNumber" placeholder="4242 4242 4242 4242" maxlength="19" required>
+          </div>
+
+          <div class="row-2">
+            <div class="input-group">
+              <label>Expiry</label>
+              <input type="text" id="expiry" placeholder="MM/YY" maxlength="5" required>
+            </div>
+            <div class="input-group">
+              <label>CVC</label>
+              <input type="text" id="cvc" placeholder="123" maxlength="4" required>
+            </div>
+          </div>
+
+          <div class="total-row">
+            <span>Total due</span>
+            <span id="totalPrice">$1,890</span>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-book" id="bookBtn">
+          <i class="fas fa-ticket-alt"></i> Pay & confirm · <span id="btnPrice">$1,890</span>
+        </button>
+      </form>
+
+      <p class="secure-note">
+        <i class="fas fa-shield-alt"></i> 256‑bit SSL secured · e‑ticket sent instantly
+      </p>
+    </div>
+  </div>
+
+  <!-- TICKET MODAL -->
+  <div class="ticket-modal" id="ticketModal">
+    <div class="ticket">
+      <div class="ticket-header">
+        <i class="fas fa-check-circle big-icon"></i>
+        <h3>Booking Confirmed</h3>
+        <p>Your luxury car is reserved</p>
+      </div>
+      <div class="ticket-body">
+        <div class="email-line">
+          <i class="fas fa-envelope"></i>
+          <span>Tickets sent to <strong id="ticketEmail">—</strong></span>
+        </div>
+
+        <div class="ticket-details">
+          <p><span>Car</span> <span>Mercedes‑Maybach S680</span></p>
+          <p><span>Route</span> <span id="ticketRoute">—</span></p>
+          <p><span>Pick‑up</span> <span id="ticketDateTime">—</span></p>
+          <p><span>Booking ID</span> <span id="ticketId">—</span></p>
+          <p><span>Total paid</span> <span id="ticketTotal">—</span></p>
+        </div>
+
+        <p style="font-size:0.78rem; color:#6b7280; text-align:center; margin-bottom:1rem;">
+          <i class="fas fa-paper-plane" style="color:#d4af37;"></i>
+          A copy has been sent to your email inbox
+        </p>
+
+        <button class="close-btn" id="closeTicketBtn">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONFIG MODAL -->
+  <div class="config-modal" id="configModal">
+    <div class="config-box">
+      <h3><i class="fas fa-envelope-circle-check" style="color:#d4af37;"></i> Enable real email sending</h3>
+      <p>
+        To send real tickets to your customers' email, create a free account at
+        <a href="https://www.emailjs.com/" target="_blank" rel="noopener">emailjs.com</a>,
+        add an email service, create a template with variables
+        <code>{{to_email}}</code>, <code>{{to_name}}</code>,
+        <code>{{booking_id}}</code>, <code>{{route}}</code>,
+        <code>{{pickup_datetime}}</code>, <code>{{total}}</code>,
+        then paste your IDs below.
+      </p>
+
+      <div class="input-group">
+        <label>Public Key</label>
+        <input type="text" id="cfgPublicKey" placeholder="e.g. AbCdEf123456">
+      </div>
+      <div class="input-group">
+        <label>Service ID</label>
+        <input type="text" id="cfgServiceId" placeholder="e.g. service_abc123">
+      </div>
+      <div class="input-group">
+        <label>Template ID</label>
+        <input type="text" id="cfgTemplateId" placeholder="e.g. template_xyz789">
+      </div>
+
+      <button class="btn-save" id="saveConfigBtn">Save & enable real emails</button>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast">
+    <i class="fas fa-check-circle"></i>
+    <span id="toastMessage">Payment successful · ticket sent</span>
+  </div>
+
+  <script>
+    // ============================================================
+    // CONFIG — load saved EmailJS config from localStorage
+    // ============================================================
+    const CONFIG_KEY = 'mashpoa_emailjs_config';
+    let emailConfig = { publicKey: '', serviceId: '', templateId: '' };
+
+    try {
+      const saved = localStorage.getItem(CONFIG_KEY);
+      if (saved) emailConfig = JSON.parse(saved);
+    } catch (e) { /* ignore */ }
+
+    // Initialize EmailJS if config exists
+    if (emailConfig.publicKey) {
+      emailjs.init({ publicKey: emailConfig.publicKey });
+    }
+
+    // Hide banner if config saved
+    const configBanner = document.getElementById('configBanner');
+    if (emailConfig.publicKey && emailConfig.serviceId && emailConfig.templateId) {
+      configBanner.style.display = 'none';
+    }
+
+    // ============================================================
+    // PRICING — prices per route/day (in USD)
+    // ============================================================
+    const BASE_PRICE = 1890;
+    const ROUTE_MULTIPLIERS = {
+      'Mombasa-Nairobi': 1.0,
+      'Nairobi-Mombasa': 1.0,
+      'Nairobi-Kisumu': 0.9,
+      'Kisumu-Nairobi': 0.9,
+      'Mombasa-Kisumu': 1.15,
+      'Kisumu-Mombasa': 1.15,
+      'Nairobi-Dar es Salaam': 1.3,
+      'Dar es Salaam-Nairobi': 1.3,
+      'Mombasa-Dar es Salaam': 1.2,
+      'Dar es Salaam-Mombasa': 1.2,
+      'Nairobi-Kigali': 1.45,
+      'Kigali-Nairobi': 1.45,
+      'Nairobi-Kampala': 1.35,
+      'Kampala-Nairobi': 1.35,
+      'Mombasa-Kigali': 1.55,
+      'Kigali-Mombasa': 1.55,
+      'Mombasa-Kampala': 1.5,
+      'Kampala-Mombasa': 1.5,
+      'Kisumu-Kigali': 1.4,
+      'Kigali-Kisumu': 1.4,
+      'Kisumu-Kampala': 1.3,
+      'Kampala-Kisumu': 1.3,
+      'Dar es Salaam-Kigali': 1.4,
+      'Kigali-Dar es Salaam': 1.4,
+      'Dar es Salaam-Kampala': 1.35,
+      'Kampala-Dar es Salaam': 1.35,
+      'Kigali-Kampala': 1.25,
+      'Kampala-Kigali': 1.25,
+    };
+
+    function calculatePrice(pickup, dropoff) {
+      const key = `${pickup}-${dropoff}`;
+      const mult = ROUTE_MULTIPLIERS[key] || 1.25;
+      return Math.round(BASE_PRICE * mult);
+    }
+
+    // ============================================================
+    // DOM refs
+    // ============================================================
+    const form = document.getElementById('bookingForm');
+    const bookBtn = document.getElementById('bookBtn');
+    const pickupCity = document.getElementById('pickupCity');
+    const dropoffCity = document.getElementById('dropoffCity');
+    const pickupDate = document.getElementById('pickupDate');
+    const pickupTime = document.getElementById('pickupTime');
+    const totalPriceEl = document.getElementById('totalPrice');
+    const btnPriceEl = document.getElementById('btnPrice');
+    const cardNumber = document.getElementById('cardNumber');
+    const expiry = document.getElementById('expiry');
+    const cvc = document.getElementById('cvc');
+    const emailInput = document.getElementById('email');
+    const fullNameInput = document.getElementById('fullName');
+
+    const ticketModal = document.getElementById('ticketModal');
+    const closeTicketBtn = document.getElementById('closeTicketBtn');
+    const toast = document.getElementById('toast');
+    const toastMessage = document.getElementById('toastMessage');
+
+    // ============================================================
+    // Set default date (today + 3 days)
+    // ============================================================
+    const today = new Date();
+    const future = new Date(today);
+    future.setDate(today.getDate() + 3);
+    pickupDate.value = future.toISOString().split('T')[0];
+
+    // ============================================================
+    // Live price update
+    // ============================================================
+    function updatePrice() {
+      const price = calculatePrice(pickupCity.value, dropoffCity.value);
+      totalPriceEl.textContent = `$${price.toLocaleString()}`;
+      btnPriceEl.textContent = `$${price.toLocaleString()}`;
+      return price;
+    }
+
+    pickupCity.addEventListener('change', updatePrice);
+    dropoffCity.addEventListener('change', updatePrice);
+    updatePrice();
+
+    // ============================================================
+    // Input formatting
+    // ============================================================
+    cardNumber.addEventListener('input', function(e) {
+      let v = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+      let formatted = '';
+      for (let i = 0; i < v.length; i++) {
+        if (i > 0 && i % 4 === 0) formatted += ' ';
+        formatted += v[i];
+      }
+      e.target.value = formatted.trim();
+    });
+
+    expiry.addEventListener('input', function(e) {
+      let v = e.target.value.replace(/\//g, '').replace(/[^0-9]/g, '');
+      e.target.value = v.length >= 2 ? v.slice(0, 2) + '/' + v.slice(2, 4) : v;
+    });
+
+    cvc.addEventListener('input', function(e) {
+      e.target.value = e.target.value.replace(/[^0-9]/g, '');
+    });
+
+    // ============================================================
+    // Toast
+    // ============================================================
+    let toastTimer;
+    function showToast(message, isError = false) {
+      clearTimeout(toastTimer);
+      toastMessage.textContent = message;
+      toast.classList.toggle('error', isError);
+      toast.querySelector('i').className = isError ? 'fas fa-exclamation-circle' : 'fas fa-check-circle';
+      toast.classList.add('show');
+      toastTimer = setTimeout(() => toast.classList.remove('show'), 4000);
+    }
+
+    // ============================================================
+    // Simulate payment gateway (900ms)
+    // ============================================================
+    function processPayment() {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          const digits = cardNumber.value.replace(/\s/g, '');
+          if (digits.length < 15) return reject(new Error('Invalid card number.'));
+          if (cvc.value.length < 3) return reject(new Error('Invalid CVC.'));
+          if (Math.random() < 0.03) return reject(new Error('Payment declined. Try again.'));
+          resolve({ success: true, txnId: 'txn_' + Date.now() });
+        }, 1000);
+      });
+    }
+
+    // ============================================================
+    // Format helpers
+    // ============================================================
+    function formatDateTime(dateStr, timeStr) {
+      if (!dateStr || !timeStr) return '—';
+      const dt = new Date(dateStr + 'T' + timeStr);
+      if (isNaN(dt)) return '—';
+      return dt.toLocaleString('en-US', {
+        weekday: 'short', year: 'numeric', month: 'short',
+        day: 'numeric', hour: '2-digit', minute: '2-digit'
+      });
+    }
+
+    function generateBookingId() {
+      return 'MP-' + Date.now().toString().slice(-6) + '-' +
+             Math.floor(100 + Math.random() * 900);
+    }
+
+    // ============================================================
+    // Send real email via EmailJS
+    // ============================================================
+    async function sendRealEmail(ticketData) {
+      if (!emailConfig.publicKey || !emailConfig.serviceId || !emailConfig.templateId) {
+        console.warn('EmailJS not configured — skipping real email send.');
+        return { skipped: true };
+      }
+
+      const templateParams = {
+        to_email: ticketData.customerEmail,
+        to_name: ticketData.customerName,
+        booking_id: ticketData.bookingId,
+        car: 'Mercedes-Maybach S680',
+        route: ticketData.route,
+        pickup_datetime: ticketData.dateTimeDisplay,
+        total: ticketData.totalFormatted,
+        message: `Thank you for booking with Mash Poa. Your luxury ${ticketData.car} is reserved for ${ticketData.dateTimeDisplay}.`
+      };
+
+      try {
+        const response = await emailjs.send(
+          emailConfig.serviceId,
+          emailConfig.templateId,
+          templateParams,
+          emailConfig.publicKey
+        );
+        console.log('EmailJS response:', response);
+        return { success: true, response };
+      } catch (err) {
+        console.error('EmailJS error:', err);
+        return { success: false, error: err };
+      }
+    }
+
+    // ============================================================
+    // SUBMIT
+    // ============================================================
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      // Validation
+      if (!fullNameInput.value.trim()) return showToast('Please enter your full name.', true);
+      if (!emailInput.value.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value))
+        return showToast('Please enter a valid email address.', true);
+      if (!pickupDate.value || !pickupTime.value)
+        return showToast('Please select pick-up date and time.', true);
+      if (pickupCity.value === dropoffCity.value)
+        return showToast('Pick-up and drop-off cities must differ.', true);
+
+      // Original button state
+      const originalHtml = bookBtn.innerHTML;
+      bookBtn.disabled = true;
+      bookBtn.innerHTML = '<span class="spinner"></span> Processing payment...';
+
+      try {
+        // 1) Payment
+        await processPayment();
+
+        // 2) Build ticket
+        const price = updatePrice();
+        const route = `${pickupCity.value} → ${dropoffCity.value}`;
+        const dateTimeDisplay = formatDateTime(pickupDate.value, pickupTime.value);
+        const bookingId = generateBookingId();
+        const customerEmail = emailInput.value.trim();
+        const customerName = fullNameInput.value.trim();
+
+        // 3) Update ticket modal BEFORE sending email
+        document.getElementById('ticketEmail').textContent = customerEmail;
+        document.getElementById('ticketRoute').textContent = route;
+        document.getElementById('ticketDateTime').textContent = dateTimeDisplay;
+        document.getElementById('ticketId').textContent = bookingId;
+        document.getElementById('ticketTotal').textContent = `$${price.toLocaleString()}`;
+
+        // 4) Show modal immediately (fast UX)
+        ticketModal.classList.add('active');
+
+        // 5) Send real email (async, non-blocking for UI)
+        bookBtn.innerHTML = '<span class="spinner"></span> Sending e-ticket...';
+
+        const emailResult = await sendRealEmail({
+          customerEmail, customerName, bookingId, route,
+          dateTimeDisplay, totalFormatted: `$${price.toLocaleString()}`,
+          car: 'Mercedes-Maybach S680'
+        });
+
+        if (emailResult.skipped) {
+          showToast('Payment OK! (Demo mode — configure EmailJS for real email)', false);
+        } else if (emailResult.success) {
+          showToast('Payment OK · real e-ticket sent to your inbox!', false);
+        } else {
+          showToast('Booking saved, but email failed. Check config.', true);
+        }
+
+      } catch (err) {
+        showToast(err.message || 'Payment failed. Try again.', true);
+      } finally {
+        bookBtn.disabled = false;
+        bookBtn.innerHTML = originalHtml;
+      }
+    });
+
+    // Close ticket
+    closeTicketBtn.addEventListener('click', () => ticketModal.classList.remove('active'));
+    ticketModal.addEventListener('click', (e) => {
+      if (e.target === ticketModal) ticketModal.classList.remove('active');
+    });
+
+    // ============================================================
+    // CONFIG MODAL
+    // ============================================================
+    const configModal = document.getElementById('configModal');
+    const openConfigBtn = document.getElementById('openConfigBtn');
+    const saveConfigBtn = document.getElementById('saveConfigBtn');
+    const cfgPublicKey = document.getElementById('cfgPublicKey');
+    const cfgServiceId = document.getElementById('cfgServiceId');
+    const cfgTemplateId = document.getElementById('cfgTemplateId');
+
+    openConfigBtn.addEventListener('click', () => {
+      cfgPublicKey.value = emailConfig.publicKey || '';
+      cfgServiceId.value = emailConfig.serviceId || '';
+      cfgTemplateId.value = emailConfig.templateId || '';
+      configModal.classList.add('active');
+    });
+
+    configModal.addEventListener('click', (e) => {
+      if (e.target === configModal) configModal.classList.remove('active');
+    });
+
+    saveConfigBtn.addEventListener('click', () => {
+      const pub = cfgPublicKey.value.trim();
+      const svc = cfgServiceId.value.trim();
+      const tpl = cfgTemplateId.value.trim();
+
+      if (!pub || !svc || !tpl) {
+        alert('Please fill all three fields.');
+        return;
+      }
+
+      emailConfig = { publicKey: pub, serviceId: svc, templateId: tpl };
+      localStorage.setItem(CONFIG_KEY, JSON.stringify(emailConfig));
+
+      try {
+        emailjs.init({ publicKey: pub });
+      } catch (e) { console.error(e); }
+
+      configBanner.style.display = 'none';
+      configModal.classList.remove('active');
+      showToast('EmailJS configured! Real emails are now enabled.', false);
+    });
+
+    // ============================================================
+    // DEMO PRE-FILL (for faster testing — user can overwrite)
+    // ============================================================
+    fullNameInput.value = 'James Carter';
+    emailInput.value = 'james.carter@example.com';
+    document.getElementById('phone').value = '+254 712 345 678';
+    cardNumber.value = '4242 4242 4242 4242';
+    expiry.value = '12/28';
+    cvc.value = '123';
+
+  </script>
+</body>               
+</html>
